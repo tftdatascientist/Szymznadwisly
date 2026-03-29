@@ -1,0 +1,40 @@
+---
+import FolkOrnament from './FolkOrnament.astro';
+---
+
+<section class="hero" id="hero">
+  <!-- Video background — replace src when real video available -->
+  <video
+    class="hero__video-bg"
+    autoplay
+    loop
+    muted
+    playsinline
+    poster=""
+    aria-hidden="true"
+  >
+    <!-- <source src="/video/hero.mp4" type="video/mp4" /> -->
+  </video>
+  <div class="hero__fallback-bg" aria-hidden="true"></div>
+  <div class="hero__overlay" aria-hidden="true"></div>
+
+  <div class="hero__content">
+    <FolkOrnament size="md" />
+    <p class="hero__label">Snycerstwo artystyczne</p>
+    <h1 class="hero__title">SZYM</h1>
+    <p class="hero__subtitle">znad Wisły</p>
+    <div class="hero__divider"></div>
+    <p class="hero__quote">
+      „Każde drewno ma swoją historię — ja ją tylko odkrywam"
+    </p>
+    <a href="#galeria" class="hero__cta">Zobacz prace ↓</a>
+  </div>
+
+  <div class="hero__ornament-bottom">
+    <FolkOrnament size="sm" />
+  </div>
+</section>
+
+<style>
+  @import '../styles/hero.css';
+</style>

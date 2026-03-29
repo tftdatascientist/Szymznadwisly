@@ -1,0 +1,90 @@
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Powiększenie zdjęcia">
+  <button class="lightbox__close" aria-label="Zamknij">×</button>
+  <button class="lightbox__nav lightbox__nav--prev" aria-label="Poprzednie">‹</button>
+  <button class="lightbox__nav lightbox__nav--next" aria-label="Następne">›</button>
+  <div class="lightbox__content" id="lightbox-content"></div>
+  <div class="lightbox__caption" id="lightbox-caption"></div>
+</div>
+
+<style>
+  @import '../styles/lightbox.css';
+</style>
+
+<script>
+  const lightbox = document.getElementById('lightbox')!;
+  const content = document.getElementById('lightbox-content')!;
+  const caption = document.getElementById('lightbox-caption')!;
+  const items = document.querySelectorAll('.masonry-item');
+  let currentIndex = 0;
+
+  function openLightbox(index: number) {
+    currentIndex = index;
+    renderItem();
+    lightbox.classList.add('lightbox--open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeLightbox() {
+    lightbox.classList.remove('lightbox--open');
+    document.body.style.overflow = '';
+    const video = content.querySelector('video');
+    if (video) video.pause();
+  }
+
+  function renderItem() {
+    const item = items[currentIndex] as HTMLElement;
+    const type = item.dataset.type;
+    const src = item.dataset.src!;
+    const title = item.dataset.title!;
+
+    if (type === 'video') {
+      content.innerHTML = `<video src="${src}" controls autoplay style="max-width:90vw;max-height:85vh;"></video>`;
+    } else {
+      content.innerHTML = `<img src="${src}" alt="${title}" />`;
+    }
+    caption.innerHTML = `<strong>${title}</strong>`;
+  }
+
+  function navigate(direction: number) {
+    const video = content.querySelector('video');
+    if (video) video.pause();
+    currentIndex = (currentIndex + direction + items.length) % items.length;
+    renderItem();
+  }
+
+  // Event listeners
+  items.forEach((item, index) => {
+    item.addEventListener('click', () => openLightbox(index));
+    item.addEventListener('keydown', (e) => {
+      if ((e as KeyboardEvent).key === 'Enter') openLightbox(index);
+    });
+  });
+
+  lightbox.querySelector('.lightbox__close')!.addEventListener('click', closeLightbox);
+  lightbox.querySelector('.lightbox__nav--prev')!.addEventListener('click', () => navigate(-1));
+  lightbox.querySelector('.lightbox__nav--next')!.addEventListener('click', () => navigate(1));
+
+  document.addEventListener('keydown', (e) => {
+    if (!lightbox.classList.contains('lightbox--open')) return;
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowLeft') navigate(-1);
+    if (e.key === 'ArrowRight') navigate(1);
+  });
+
+  // Close on backdrop click
+  lightbox.addEventListener('click', (e) => {
+    if (e.target === lightbox) closeLightbox();
+  });
+
+  // Swipe support
+  let touchStartX = 0;
+  lightbox.addEventListener('touchstart', (e) => {
+    touchStartX = e.changedTouches[0].screenX;
+  });
+  lightbox.addEventListener('touchend', (e) => {
+    const diff = e.changedTouches[0].screenX - touchStartX;
+    if (Math.abs(diff) > 50) {
+      navigate(diff > 0 ? -1 : 1);
+    }
+  });
+</script>

@@ -1,0 +1,71 @@
+---
+interface Props {
+  title: string;
+  image: string;
+  material: string;
+  year: number;
+  type: 'photo' | 'video';
+  videoSrc?: string;
+  duration?: string;
+  dimensions?: string;
+  index: number;
+}
+
+const { title, image, material, year, type, videoSrc, duration, dimensions, index } = Astro.props;
+
+const metaParts = [material, year.toString(), dimensions].filter(Boolean);
+const metaText = metaParts.join(' · ');
+---
+
+<div
+  class="masonry-item"
+  data-index={index}
+  data-type={type}
+  data-src={type === 'video' ? videoSrc : image}
+  data-title={title}
+  role="button"
+  tabindex="0"
+  aria-label={`${title} — ${metaText}`}
+>
+  {type === 'video' && <span class="masonry-item__video-badge">▶ WIDEO</span>}
+  <img src={image} alt={title} loading="lazy" />
+  {type === 'video' && videoSrc && (
+    <video
+      class="masonry-item__video-preview"
+      src={videoSrc}
+      muted
+      loop
+      playsinline
+      preload="none"
+      aria-hidden="true"
+    />
+  )}
+  <div class="masonry-item__overlay">
+    <h3 class="masonry-item__title">{title}</h3>
+    <p class="masonry-item__meta">
+      {metaText}
+      {type === 'video' && duration && ` · ${duration}`}
+    </p>
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll('.masonry-item[data-type="video"]').forEach((item) => {
+    const video = item.querySelector('.masonry-item__video-preview') as HTMLVideoElement | null;
+    const img = item.querySelector('img') as HTMLImageElement | null;
+    if (!video || !img) return;
+
+    item.addEventListener('mouseenter', () => {
+      video.style.display = 'block';
+      img.style.display = 'none';
+      video.play().catch(() => {});
+    });
+
+    item.addEventListener('mouseleave', () => {
+      video.pause();
+      video.currentTime = 0;
+      video.style.display = 'none';
+      img.style.display = 'block';
+    });
+  });
+</script>

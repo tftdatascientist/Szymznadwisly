@@ -1,0 +1,43 @@
+---
+interface Props {
+  size?: 'sm' | 'md' | 'lg';
+}
+
+const { size = 'md' } = Astro.props;
+
+const dimensions = {
+  sm: { width: 40, height: 20, r1: 2, r2: 1.5 },
+  md: { width: 80, height: 40, r1: 4, r2: 2 },
+  lg: { width: 120, height: 60, r1: 6, r2: 3 },
+};
+
+const d = dimensions[size];
+const midX = d.width / 2;
+const midY = d.height / 2;
+const qx1 = d.width * 0.25;
+const qx2 = d.width * 0.75;
+---
+
+<svg
+  class="folk-ornament"
+  width={d.width}
+  height={d.height}
+  viewBox={`0 0 ${d.width} ${d.height}`}
+  aria-hidden="true"
+>
+  <path
+    d={`M0,${midY} Q${qx1},0 ${midX},${midY} Q${qx2},${d.height} ${d.width},${midY}`}
+    stroke="var(--red)"
+    fill="none"
+    stroke-width="1.5"
+  />
+  <path
+    d={`M0,${midY} Q${qx1},${d.height} ${midX},${midY} Q${qx2},0 ${d.width},${midY}`}
+    stroke="var(--gold)"
+    fill="none"
+    stroke-width="1.5"
+  />
+  <circle cx={midX} cy={midY} r={d.r1} fill="var(--red)" />
+  <circle cx={qx1 * 0.6} cy={midY} r={d.r2} fill="var(--gold)" />
+  <circle cx={d.width - qx1 * 0.6} cy={midY} r={d.r2} fill="var(--gold)" />
+</svg>

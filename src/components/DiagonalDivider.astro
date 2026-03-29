@@ -1,0 +1,25 @@
+---
+interface Props {
+  from: 'dark' | 'light';
+  to: 'dark' | 'light';
+}
+
+const { from, to } = Astro.props;
+
+const colorMap = {
+  dark: 'var(--dark)',
+  light: 'var(--cream)',
+};
+---
+
+<div
+  class="diagonal-divider"
+  style={`background: linear-gradient(172deg, ${colorMap[from]} 48%, ${colorMap[to]} 48%);`}
+/>
+
+<style>
+  .diagonal-divider {
+    height: 80px;
+    width: 100%;
+  }
+</style>

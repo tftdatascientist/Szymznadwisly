@@ -1,0 +1,34 @@
+---
+import { getCollection } from 'astro:content';
+import GalleryItem from './GalleryItem.astro';
+
+const galleryItems = (await getCollection('gallery')).sort(
+  (a, b) => a.data.order - b.data.order
+);
+---
+
+<section class="gallery" id="galeria">
+  <div class="gallery__header">
+    <p class="gallery__label">Prace</p>
+    <h2 class="gallery__title">Galeria rzeźb</h2>
+  </div>
+  <div class="masonry">
+    {galleryItems.map((item, index) => (
+      <GalleryItem
+        title={item.data.title}
+        image={item.data.image}
+        material={item.data.material}
+        year={item.data.year}
+        type={item.data.type}
+        videoSrc={item.data.videoSrc}
+        duration={item.data.duration}
+        dimensions={item.data.dimensions}
+        index={index}
+      />
+    ))}
+  </div>
+</section>
+
+<style>
+  @import '../styles/gallery.css';
+</style>

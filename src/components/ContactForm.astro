@@ -1,0 +1,72 @@
+<section class="contact" id="kontakt">
+  <div class="contact__header">
+    <p class="contact__label">Kontakt</p>
+    <h2 class="contact__title">Napisz do Szymona</h2>
+  </div>
+  <div class="contact__content">
+    <form class="contact__form" id="contact-form" action="" method="POST">
+      <input type="text" name="name" placeholder="Imię" required />
+      <input type="email" name="email" placeholder="Email" required />
+      <textarea name="message" placeholder="Wiadomość..." required></textarea>
+      <button type="submit">Wyślij wiadomość</button>
+      <p class="form-message" id="form-message"></p>
+    </form>
+    <div class="contact__side">
+      <a href="https://www.instagram.com/szymznadwisly/" target="_blank" rel="noopener" class="contact__ig-link">
+        <div class="contact__ig-icon">IG</div>
+        <div>
+          <div style="font-weight:600;">@szymznadwisly</div>
+          <div style="font-size:11px;color:#888;">Instagram</div>
+        </div>
+      </a>
+      <p class="contact__note">
+        Zainteresowany rzeźbą? Napisz — Szymon chętnie porozmawia
+        o swoich pracach i możliwościach zamówienia.
+      </p>
+    </div>
+  </div>
+</section>
+
+<script>
+  const form = document.getElementById('contact-form') as HTMLFormElement;
+  const msg = document.getElementById('form-message')!;
+  const formspreeId = import.meta.env.PUBLIC_FORMSPREE_ID;
+
+  if (formspreeId) {
+    form.action = `https://formspree.io/f/${formspreeId}`;
+  }
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    msg.className = 'form-message';
+    msg.style.display = 'none';
+
+    if (!formspreeId) {
+      msg.textContent = 'Formularz nie jest jeszcze skonfigurowany.';
+      msg.className = 'form-message form-message--error';
+      msg.style.display = 'block';
+      return;
+    }
+
+    try {
+      const res = await fetch(form.action, {
+        method: 'POST',
+        body: new FormData(form),
+        headers: { Accept: 'application/json' },
+      });
+
+      if (res.ok) {
+        msg.textContent = 'Wiadomość wysłana! Szymon odpisze wkrótce.';
+        msg.className = 'form-message form-message--success';
+        msg.style.display = 'block';
+        form.reset();
+      } else {
+        throw new Error('Failed');
+      }
+    } catch {
+      msg.textContent = 'Coś poszło nie tak. Spróbuj ponownie lub napisz na Instagramie.';
+      msg.className = 'form-message form-message--error';
+      msg.style.display = 'block';
+    }
+  });
+</script>

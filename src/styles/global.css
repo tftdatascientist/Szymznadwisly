@@ -1,0 +1,45 @@
+@import './sections.css';
+
+/* === RESET === */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+img, video {
+  display: block;
+  max-width: 100%;
+}
+
+/* === PALETTE === */
+:root {
+  /* Palette A — dark */
+  --dark: #1a1a1a;
+  --cream-on-dark: #f5f0e8;
+  --gold: #c8a96e;
+  --red: #e63946;
+  --green-dark: #2d6a4f;
+
+  /* Palette B — light */
+  --cream: #faf8f4;
+  --text-dark: #2c2c2c;
+  --brown: #8b6f47;
+  --brown-light: #d4a373;
+  --green-light: #606c38;
+
+  /* Shared */
+  --text-muted: #8b8b8b;
+  --font-serif: Georgia, 'Times New Roman', serif;
+  --font-sans: system-ui, -apple-system, 'Segoe UI', sans-serif;
+}

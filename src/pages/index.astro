@@ -1,0 +1,24 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Hero from '../components/Hero.astro';
+import Gallery from '../components/Gallery.astro';
+import Lightbox from '../components/Lightbox.astro';
+import DiagonalDivider from '../components/DiagonalDivider.astro';
+import Quote from '../components/Quote.astro';
+import Location from '../components/Location.astro';
+import ContactForm from '../components/ContactForm.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<Layout title="Szym znad Wisły — Snycerstwo artystyczne" description="Portfolio snycerza Szymona z Nowej Wsi koło Grudziądza. Rzeźba w drewnie z serca Kujaw.">
+  <Hero />
+  <Gallery />
+  <DiagonalDivider from="dark" to="light" />
+  <Quote />
+  <DiagonalDivider from="light" to="dark" />
+  <Location />
+  <DiagonalDivider from="dark" to="light" />
+  <ContactForm />
+  <Footer />
+  <Lightbox />
+</Layout>
